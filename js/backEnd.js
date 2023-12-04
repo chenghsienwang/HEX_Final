@@ -17,3 +17,4 @@ let chart = c3.generate({
         }
     },
 });
+console.log("test")
