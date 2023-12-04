@@ -113,7 +113,7 @@ shoppingListRender();
 productSelect.addEventListener("change", (event) => {
     switch (event.target.value) {
         case "全部":
-            productCardAll()
+            productCard()
             console.log("跑全部");
             break;
         case "窗簾":
