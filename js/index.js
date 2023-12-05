@@ -90,7 +90,7 @@ function shoppingListRender() {
     <td>${data[i].quantity}</td>
     <td>NT$${(internationalNumberFormat.format((data[i].product.price) * (data[i].quantity)))}</td>
     <td class="discardBtn">
-        <a href="#" class="material-icons>
+        <a href="#" class="material-icons">
             clear
         </a>
     </td></tr>`
