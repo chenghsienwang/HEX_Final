@@ -5,6 +5,12 @@ const productWrap = document.querySelector(".productWrap");
 const productSelect = document.querySelector(".productSelect");
 // 購物車區域
 const shoppingCartTable = document.querySelector(".shoppingCart-table");
+
+let addCardBtn
+window.onload = function(){
+    addCardBtn = document.querySelector(".addCardBtn");
+}
+
 /*------------------變數區 end------------------*/
 /*------------------網路上找來的功能專區 start------------------*/
 // 引入數字自動逗點
@@ -54,6 +60,7 @@ function productCardSelect(category) {
                 }
             }
             productWrap.innerHTML = productCardStr;
+            addCardBtn = document.querySelectorAll(".addCardBtn");
         })
 }
 
@@ -130,3 +137,7 @@ productSelect.addEventListener("change", (event) => {
             break;
     }
 })
+
+// addCardBtn.addEventListener("click",(event)=>{
+//     console.log(event);
+// })
