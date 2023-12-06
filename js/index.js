@@ -7,8 +7,12 @@ const productSelect = document.querySelector(".productSelect");
 const shoppingCartTable = document.querySelector(".shoppingCart-table");
 // 加入購物車按鈕，在function中再賦值
 let addCardBtn
+// 清空購物車按鈕，在function中再賦值
 let discardAllBtn
+// 刪除單向商品按鈕，在function中再賦值
 let discardBtn
+// 送出訂單按鈕
+const orderInfoBtn = document.querySelector(".orderInfo-btn");
 /*------------------變數區 end------------------*/
 
 /*------------------網路上找來的功能專區 start------------------*/
@@ -90,7 +94,7 @@ function shoppingListRender() {
     <td>${data[i].quantity}</td>
     <td>NT$${(internationalNumberFormat.format((data[i].product.price) * (data[i].quantity)))}</td>
     <td class="discardBtn">
-        <a href="#" class="material-icons">
+        <a href="#" class="material-icons" id="${data[i].id}">
             clear
         </a>
     </td></tr>`
@@ -148,18 +152,23 @@ function binddiscardAllBtnEventListeners() {
             then(function (response) {
                 console.log("已刪除");
                 alert("已清空購物車");
-                shoppingListRender();            
+                shoppingListRender();
             })
     })
 }
 
 // 幫刪除單項商品的按鈕加上eventListener並且點下去能刪除的function
-function binddiscardBtnEventListeners(){
+function binddiscardBtnEventListeners() {
     discardBtn = document.querySelectorAll(".discardBtn");
     for (let i = 0; i < discardBtn.length; i++) {
         discardBtn[i].addEventListener("click", (event) => {
-            console.log(event);
-            // axios.delete('https://livejs-api.hexschool.io/api/livejs/v1/customer/shiro/carts/8HdRRNABc0wHguwcXLWf')
+            console.log(event.target);
+            axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/shiro/carts/${event.target.id}`)
+                .then(function (response) {
+                    console.log("已刪除");
+                    alert("已刪除");
+                    shoppingListRender();
+                })
         })
     }
 }
@@ -193,3 +202,96 @@ productSelect.addEventListener("change", (event) => {
             break;
     }
 })
+
+// 送出訂單用的eventListener
+orderInfoBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    console.log('Button clicked');
+    const url = 'https://livejs-api.hexschool.io/api/livejs/v1/customer/shiro/orders';
+    const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+    const userName = document.querySelector("#customerName").value;
+    const tel = document.querySelector("#customerPhone").value;
+    const email = document.querySelector("#customerEmail").value;
+    const address = document.querySelector("#customerAddress").value;
+    const tradeWay = document.querySelector("#tradeWay").value;
+
+    const data = {
+        "data": {
+            "user": {
+                "name": userName,
+                "tel": tel,
+                "email": email,
+                "address": address,
+                "payment": tradeWay
+            }
+        }
+    };
+
+    axios.post(url, data, { headers })
+        .then(response => {
+            // 處理成功的回應
+            console.log(response.data);
+        })
+        .catch(error => {
+            // 處理錯誤
+            console.error(error.response.data);
+        });
+})
+
+
+
+
+
+
+
+
+// get訂單
+// axios({
+//       method: 'GET',
+//       url: 'https://livejs-api.hexschool.io/api/livejs/v1/admin/shiro/orders',
+//       responseType: 'json',
+//         headers: {
+//         'authorization': '4IyLStgtELTjNUpTyCh0eFCS5ot1',
+//       }
+//     })
+//     .then(function (response) {
+//   console.log(response.data);
+//     })
+//     .catch(function (error) {
+//       console.log('錯誤',error);
+//     });
+
+
+
+// post訂單
+// const url = 'https://livejs-api.hexschool.io/api/livejs/v1/customer/shiro/orders';
+
+// const headers = {
+//   'Accept': 'application/json',
+//   'Content-Type': 'application/json'
+// };
+
+// const data = {
+//   "data": {
+//     "user": {
+//       "name": "六角學院TEST",
+//       "tel": "07-5313506",
+//       "email": "hexschool@hexschool.com",
+//       "address": "高雄市六角學院路",
+//       "payment": "Apple Pay"
+//     }
+//   }
+// };
+
+// axios.post(url, data, { headers })
+//   .then(response => {
+//     // 處理成功的回應
+//     console.log(response.data);
+//   })
+//   .catch(error => {
+//     // 處理錯誤
+//     console.error(error.response.data);
+//   });
