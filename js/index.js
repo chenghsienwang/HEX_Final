@@ -228,18 +228,22 @@ orderInfoBtn.addEventListener("click", (event) => {
             }
         }
     };
-
+    if(userName =="" || tel =="" || email =="" || address =="" || tradeWay ==""){
+        alert("請填寫完整顧客資料");
+    }
+    else{
     axios.post(url, data, { headers })
         .then(response => {
             // 處理成功的回應
             console.log(response.data);
             alert("已送出訂單");
+            shoppingListRender()
         })
         .catch(error => {
             // 處理錯誤
             console.error(error.response.data);
             alert("訂單傳送失敗，請洽管理員");
-        });
+        });}
 })
 
 

@@ -131,7 +131,7 @@ function orderRender() {
         </td>
         <td>${formattedDate}</td>
         <td class="orderStatus">
-          <a href="#">${orderStatus}</a>
+          <a href="#" class="orderStatusChange">${orderStatus}</a>
         </td>
         <td>
           <input type="button" class="delSingleOrder-Btn" value="刪除">
@@ -174,8 +174,36 @@ function orderRender() {
                     })
                 }
             }
+            function bindOrderStatusChangeBtnEventListeners() {
+                orderStatusChangeBtn = document.querySelectorAll(".orderStatusChange");
+                for (let i = 0; i < orderStatusChangeBtn.length; i++) {
+                    orderStatusChangeBtn[i].addEventListener("click", (event) => {
+                        const newPaidStatus = !orderData[i].paid;
+                            axios({
+                                method: 'PUT',
+                                url: `https://livejs-api.hexschool.io/api/livejs/v1/admin/shiro/orders`,
+                                responseType: 'json',
+                                headers: {
+                                    'accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'authorization': '4IyLStgtELTjNUpTyCh0eFCS5ot1',
+                                },
+                                data: {"data":{
+                                    "id": `${orderData[i].id}`,
+                                    "paid": newPaidStatus}
+                                }
+                            }).then(function (response) {
+                                alert("已修改狀態");
+                                orderRender();
+                            }).catch(function (error) {
+                                console.log('錯誤', error);
+                            });
+                    })
+                }
+            }
             orderDetailRender();
-            bindDelSingleOrderBtnEventListeners()
+            bindDelSingleOrderBtnEventListeners();
+            bindOrderStatusChangeBtnEventListeners();
         })
         .catch(function (error) {
             console.log('錯誤', error);
