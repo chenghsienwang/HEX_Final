@@ -206,7 +206,6 @@ productSelect.addEventListener("change", (event) => {
 // 送出訂單用的eventListener
 orderInfoBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log('Button clicked');
     const url = 'https://livejs-api.hexschool.io/api/livejs/v1/customer/shiro/orders';
     const headers = {
         'Accept': 'application/json',
@@ -234,10 +233,12 @@ orderInfoBtn.addEventListener("click", (event) => {
         .then(response => {
             // 處理成功的回應
             console.log(response.data);
+            alert("已送出訂單");
         })
         .catch(error => {
             // 處理錯誤
             console.error(error.response.data);
+            alert("訂單傳送失敗，請洽管理員");
         });
 })
 
